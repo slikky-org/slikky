@@ -186,12 +186,12 @@ if advies_output:
         pdf.set_text_color(0, 0, 0)  # terug naar zwart
         pdf.set_font("Arial", size=12)
 
-    for line in advies_output.split("\n"):
-        pdf.multi_cell(0, 10, line)
+   for line in advies_output.split("\n"):
+    pdf.multi_cell(0, 10, line)
 
-    buffer = BytesIO()
-    pdf_bytes = pdf.output(dest='S').encode('latin1')
-    buffer.write(pdf_bytes)
+
+        buffer = BytesIO()
+    pdf.output(buffer)
     buffer.seek(0)
 
     st.download_button(
@@ -205,7 +205,16 @@ if advies_output:
     ---
     *Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
     """)
+        label="💾 Opslaan als PDF",
+        data=buffer,
+        file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
+        mime="application/pdf"
+    )
 
+    st.markdown("""
+---
+*Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
+""")
 
 # Resetknop onderaan
 if st.button("🔁 Formulier resetten"):
