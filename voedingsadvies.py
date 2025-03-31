@@ -186,9 +186,8 @@ if advies_output:
         pdf.set_text_color(0, 0, 0)
         pdf.set_font("Arial", size=12)
 
-    for line in advies_output.split("
-"):
-        pdf.multi_cell(0, 10, line)
+   for line in advies_output.split("\n"):
+    pdf.multi_cell(0, 10, line)
 
     buffer = BytesIO()
     pdf.output(buffer)
