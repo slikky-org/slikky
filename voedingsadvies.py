@@ -178,20 +178,17 @@ if advies_output:
     pdf.multi_cell(0, 10, "Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.")
     pdf.multi_cell(0, 10, "---")
 
-    
-
     if onder_toezicht_optie == "Ja":
-    pdf.set_fill_color(255, 204, 204)  # lichtrood
-    pdf.set_text_color(153, 0, 0)  # donkerrood
-    pdf.set_font("Arial", "B", 12)
-    pdf.multi_cell(0, 10, "🚨 Deze persoon mag alleen eten onder toezicht!", border=1, fill=True)
-    pdf.set_text_color(0, 0, 0)  # terug naar zwart
-    pdf.set_font("Arial", size=12)
+        pdf.set_fill_color(255, 204, 204)  # lichtrood
+        pdf.set_text_color(153, 0, 0)  # donkerrood
+        pdf.set_font("Arial", "B", 12)
+        pdf.multi_cell(0, 10, "🚨 Deze persoon mag alleen eten onder toezicht!", border=1, fill=True)
+        pdf.set_text_color(0, 0, 0)  # terug naar zwart
+        pdf.set_font("Arial", size=12)
 
-
-for line in advies_output.split("\n"):
-    pdf.multi_cell(0, 10, line)
-
+    for line in advies_output.split("
+"):
+        pdf.multi_cell(0, 10, line)
 
     buffer = BytesIO()
     pdf_bytes = pdf.output(dest='S').encode('latin1')
@@ -199,6 +196,16 @@ for line in advies_output.split("\n"):
     buffer.seek(0)
 
     st.download_button(
+        label="💾 Opslaan als PDF",
+        data=buffer,
+        file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
+        mime="application/pdf"
+    )
+
+    st.markdown("""
+    ---
+    *Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
+    """)
         label="💾 Opslaan als PDF",
         data=buffer,
         file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
