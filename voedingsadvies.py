@@ -8,7 +8,11 @@ from io import BytesIO
 import datetime
 
 # Stel Nederlandse datumweergave in
-locale.setlocale(locale.LC_TIME, 'nl_NL.UTF-8')
+import locale
+try:
+    locale.setlocale(locale.LC_TIME, 'nl_NL.UTF-8')
+except locale.Error:
+    locale.setlocale(locale.LC_TIME, '')
 
 # Laad de API key uit het .env-bestand
 load_dotenv()
