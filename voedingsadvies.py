@@ -186,9 +186,9 @@ if advies_output:
         pdf.set_text_color(0, 0, 0)  # terug naar zwart
         pdf.set_font("Arial", size=12)
 
-    for line in advies_output.split("
-"):
+   for line in advies_output.split("\n"):
         pdf.multi_cell(0, 10, line)
+
 
     buffer = BytesIO()
     pdf_bytes = pdf.output(dest='S').encode('latin1')
