@@ -180,8 +180,25 @@ if advies_output:
 
     
 
-    for line in advies_output.split("\n"):
-        pdf.multi_cell(0, 10, line)
+    if onder_toezicht_optie == "Ja":
+        pdf.set_fill_color(255, 204, 204)  # lichtrood
+        pdf.set_text_color(153, 0, 0)  # donkerrood
+        pdf.set_font("Arial", "B", 12)
+        pdf.multi_cell(0, 10, "🚨 Deze persoon mag alleen eten onder toezicht!", border=1, fill=True)
+        pdf.set_text_color(0, 0, 0)  # terug naar zwart
+        pdf.set_font("Arial", size=12)
+
+    if onder_toezicht_optie == "Ja":
+    pdf.set_fill_color(255, 204, 204)  # lichtrood
+    pdf.set_text_color(153, 0, 0)  # donkerrood
+    pdf.set_font("Arial", "B", 12)
+    pdf.multi_cell(0, 10, "🚨 Deze persoon mag alleen eten onder toezicht!", border=1, fill=True)
+    pdf.set_text_color(0, 0, 0)  # terug naar zwart
+    pdf.set_font("Arial", size=12)
+
+for line in advies_output.split("\n"):
+    pdf.multi_cell(0, 10, line)
+
 
     buffer = BytesIO()
     pdf_bytes = pdf.output(dest='S').encode('latin1')
