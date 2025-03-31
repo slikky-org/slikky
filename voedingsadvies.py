@@ -3,16 +3,15 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import locale
-from fpdf import FPDF
-from io import BytesIO
-import datetime
-
-# Stel Nederlandse datumweergave in
-import locale
 try:
     locale.setlocale(locale.LC_TIME, 'nl_NL.UTF-8')
 except locale.Error:
     locale.setlocale(locale.LC_TIME, '')
+
+from fpdf import FPDF
+from io import BytesIO
+import datetime
+
 
 # Laad de API key uit het .env-bestand
 load_dotenv()
