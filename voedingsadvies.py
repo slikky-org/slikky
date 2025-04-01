@@ -167,7 +167,7 @@ Zorg dat het advies duidelijk, praktisch en bruikbaar is voor een zorgverlener. 
 
 # Download als PDF
 if advies_output:
-        pdf = FPDF()  # fpdf2
+    pdf = FPDF()  # fpdf2
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
 
