@@ -170,7 +170,11 @@ if advies_output:
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_font('DejaVu', '', 'DejaVuSans.ttf', uni=True)
+
+    font_path = os.path.join(os.path.dirname(__file__), 'DejaVuSans.ttf')
+    font_bold_path = os.path.join(os.path.dirname(__file__), 'DejaVuSans-Bold.ttf')
+    pdf.add_font('DejaVu', '', font_path, uni=True)
+    pdf.add_font('DejaVu', 'B', font_bold_path, uni=True)
     pdf.set_font('DejaVu', size=12)
     pdf.image("logo_slikky.png", x=10, y=8, w=40)
     pdf.ln(20)
