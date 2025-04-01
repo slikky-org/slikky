@@ -191,8 +191,7 @@ if advies_output:
 
 
     buffer = BytesIO()
-    pdf_bytes = pdf.output(dest='S').encode('latin1')
-    buffer.write(pdf_bytes)
+    pdf.output(buffer)
     buffer.seek(0)
 
 
