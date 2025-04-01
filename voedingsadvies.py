@@ -204,8 +204,8 @@ if advies_output:
         elements.append(toezicht_box)
         elements.append(Spacer(1, 12))
 
-    for regel in advies_output.split("
-"):
+    for regel in advies_output.split("\n"):
+
         if regel.strip() != "":
             elements.append(Paragraph(regel.strip(), styles['Body']))
             elements.append(Spacer(1, 6))
