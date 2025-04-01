@@ -8,7 +8,7 @@ try:
 except locale.Error:
     locale.setlocale(locale.LC_TIME, '')
 
-from fpdf import FPDF
+from fpdf import FPDF  # fpdf2 gebruiken voor volledige Unicode-ondersteuning
 from io import BytesIO
 import datetime
 
@@ -167,7 +167,7 @@ Zorg dat het advies duidelijk, praktisch en bruikbaar is voor een zorgverlener. 
 
 # Download als PDF
 if advies_output:
-    pdf = FPDF()
+        pdf = FPDF()  # fpdf2
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
 
