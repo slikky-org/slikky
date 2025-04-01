@@ -191,7 +191,8 @@ if advies_output:
 
 
     buffer = BytesIO()
-    pdf.output(buffer)
+    pdf_bytes = pdf.output(dest='S').encode('latin1')
+    buffer.write(pdf_bytes)
     buffer.seek(0)
 
     st.download_button(
