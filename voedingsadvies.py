@@ -210,7 +210,17 @@ if advies_output:
             elements.append(Paragraph(regel.strip(), styles['Body']))
             elements.append(Spacer(1, 6))
 
-    pdf.build(elements)
+    def header_footer(canvas, doc):
+        canvas.saveState()
+        canvas.setFont('Helvetica', 9)
+        titel = f"Voedingsadvies voor {client_gender} {client_naam} ({client_geboortedatum.strftime('%d/%m/%Y')})"
+        canvas.drawString(2 * cm, A4[1] - 1.5 * cm, titel)
+
+        page_num = f"Pagina {doc.page}"
+        canvas.drawRightString(A4[0] - 2 * cm, 1.5 * cm, page_num)
+        canvas.restoreState()
+
+    pdf.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
     buffer.seek(0)
 
     st.download_button(
