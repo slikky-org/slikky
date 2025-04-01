@@ -12,6 +12,15 @@ from fpdf import FPDF  # fpdf2 gebruiken voor volledige Unicode-ondersteuning
 from io import BytesIO
 import datetime
 
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.units import cm
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+from reportlab.lib.enums import TA_LEFT
+from reportlab.lib.styles import ParagraphStyle
+
 
 # Laad de API key uit het .env-bestand
 load_dotenv()
@@ -166,15 +175,6 @@ Zorg dat het advies duidelijk, praktisch en bruikbaar is voor een zorgverlener. 
             st.error(f"Er ging iets mis bij het ophalen van het advies: {e}")
 
 # Download als PDF
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-from reportlab.lib import colors
-from reportlab.lib.units import cm
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
-from reportlab.lib.enums import TA_LEFT
-from reportlab.lib.styles import ParagraphStyle
-
 if advies_output:
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
@@ -204,7 +204,8 @@ if advies_output:
         elements.append(toezicht_box)
         elements.append(Spacer(1, 12))
 
-    for regel in advies_output.split("\n"):
+    for regel in advies_output.split("
+"):
         if regel.strip() != "":
             elements.append(Paragraph(regel.strip(), styles['Body']))
             elements.append(Spacer(1, 6))
@@ -223,7 +224,6 @@ if advies_output:
     ---
     *Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
     """)
-
 
 # Resetknop onderaan
 if st.button("🔁 Formulier resetten"):
