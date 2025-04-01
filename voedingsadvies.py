@@ -170,7 +170,8 @@ if advies_output:
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.set_font("Arial", size=12)
+    pdf.add_font('DejaVu', '', 'DejaVuSans.ttf', uni=True)
+    pdf.set_font('DejaVu', size=12)
     pdf.image("logo_slikky.png", x=10, y=8, w=40)
     pdf.ln(20)
 
@@ -181,10 +182,10 @@ if advies_output:
     if onder_toezicht_optie == "Ja":
         pdf.set_fill_color(255, 204, 204)
         pdf.set_text_color(153, 0, 0)
-        pdf.set_font("Arial", "B", 12)
+        pdf.set_font('DejaVu', 'B', 12)
         pdf.multi_cell(0, 10, "🚨 Deze persoon mag alleen eten onder toezicht!", border=1, fill=True)
         pdf.set_text_color(0, 0, 0)
-        pdf.set_font("Arial", size=12)
+        pdf.set_font('DejaVu', size=12)
 
     for line in advies_output.split("\n"):
         pdf.multi_cell(0, 10, line)
