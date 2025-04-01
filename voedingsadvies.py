@@ -166,39 +166,51 @@ Zorg dat het advies duidelijk, praktisch en bruikbaar is voor een zorgverlener. 
             st.error(f"Er ging iets mis bij het ophalen van het advies: {e}")
 
 # Download als PDF
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.units import cm
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+from reportlab.lib.enums import TA_LEFT
+from reportlab.lib.styles import ParagraphStyle
+
 if advies_output:
-    pdf = FPDF()  # fpdf2
-    pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=15)
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
 
-    font_path = os.path.join(os.path.dirname(__file__), 'DejaVuSans.ttf')
-    font_bold_path = os.path.join(os.path.dirname(__file__), 'DejaVuSans-Bold.ttf')
-    pdf.add_font('DejaVu', '', font_path, uni=True)
-    pdf.add_font('DejaVu', 'B', font_bold_path, uni=True)
-    pdf.set_font('DejaVu', size=12)
-    pdf.image("logo_slikky.png", x=10, y=8, w=40)
-    pdf.ln(20)
+    elements = []
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
+    styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
 
-    pdf.multi_cell(0, 10, "---")
-    pdf.multi_cell(0, 10, "Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.")
-    pdf.multi_cell(0, 10, "---")
+    # Logo
+    try:
+        from reportlab.platypus import Image
+        logo = Image("logo_slikky.png", width=3.5*cm, height=3.5*cm)
+        elements.append(logo)
+    except Exception as e:
+        elements.append(Paragraph("⚠️ Logo niet gevonden: " + str(e), styles['Body']))
+
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph("---", styles['Body']))
+    elements.append(Paragraph("Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.", styles['Body']))
+    elements.append(Paragraph("---", styles['Body']))
+    elements.append(Spacer(1, 12))
 
     if onder_toezicht_optie == "Ja":
-        pdf.set_fill_color(255, 204, 204)
-        pdf.set_text_color(153, 0, 0)
-        pdf.set_font('DejaVu', 'B', 12)
-        pdf.multi_cell(0, 10, "🚨 Deze persoon mag alleen eten onder toezicht!", border=1, fill=True)
-        pdf.set_text_color(0, 0, 0)
-        pdf.set_font('DejaVu', size=12)
+        toezicht_tekst = "🚨 Deze persoon mag alleen eten onder toezicht!"
+        toezicht_box = Paragraph(toezicht_tekst, styles["BoldBox"])
+        elements.append(toezicht_box)
+        elements.append(Spacer(1, 12))
 
-    for line in advies_output.split("\n"):
-        pdf.multi_cell(0, 10, line)
+    for regel in advies_output.split("\n"):
+        if regel.strip() != "":
+            elements.append(Paragraph(regel.strip(), styles['Body']))
+            elements.append(Spacer(1, 6))
 
-
-    buffer = BytesIO()
-    pdf.output(buffer)
+    pdf.build(elements)
     buffer.seek(0)
-
 
     st.download_button(
         label="💾 Opslaan als PDF",
@@ -211,6 +223,7 @@ if advies_output:
     ---
     *Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
     """)
+
 
 # Resetknop onderaan
 if st.button("🔁 Formulier resetten"):
