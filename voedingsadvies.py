@@ -214,7 +214,7 @@ if advies_output:
     elements.append(Spacer(1, 12))
 iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
 
-    elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
+elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
 
     # Witruimte (10 regels)
     elements.append(Spacer(1, 160))
