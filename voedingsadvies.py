@@ -216,13 +216,13 @@ iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in ov
 
 elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
 
-    # Witruimte (10 regels)
-    elements.append(Spacer(1, 160))
+# Witruimte (10 regels)
+elements.append(Spacer(1, 160))
 
-    # Merkvermelding
-    elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
-    elements.append(Spacer(1, 12))
-    try:
+# Merkvermelding
+elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
+elements.append(Spacer(1, 12))
+try:
         merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
         merkbadge.hAlign = 'CENTER'
         elements.append(merkbadge)
