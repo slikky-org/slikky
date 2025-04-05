@@ -167,6 +167,9 @@ if advies_output:
     pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
 
     elements = []
+    iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
+
+    elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
     styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
@@ -212,9 +215,6 @@ if advies_output:
 
     # Disclaimer onder IDDSI
     elements.append(Spacer(1, 12))
-iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
-
-elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
 
 # Witruimte (10 regels)
 elements.append(Spacer(1, 160))
