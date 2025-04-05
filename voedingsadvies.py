@@ -222,12 +222,12 @@ elements.append(Spacer(1, 160))
 # Merkvermelding
 elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
 elements.append(Spacer(1, 12))
-    try:
-        merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
-        merkbadge.hAlign = 'CENTER'
-        elements.append(merkbadge)
-    except Exception as e:
-        elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
+try:
+    merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
+    merkbadge.hAlign = 'CENTER'
+    elements.append(merkbadge)
+except Exception as e:
+    elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
 
     # Pagina-header/footer
     def header_footer(canvas, doc):
