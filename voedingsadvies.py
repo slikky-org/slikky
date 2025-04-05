@@ -169,8 +169,11 @@ if advies_output:
     elements = []
     iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
 
-    elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
+# Merkvermelding
     styles = getSampleStyleSheet()
+    elements.append(Spacer(1, 160))
+    elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
+    elements.append(Spacer(1, 12))
     styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
     styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
     styles.add(ParagraphStyle(name='Small', fontSize=9, leading=12, alignment=TA_LEFT))
@@ -217,11 +220,7 @@ if advies_output:
     elements.append(Spacer(1, 12))
 
 # Witruimte (10 regels)
-elements.append(Spacer(1, 160))
 
-# Merkvermelding
-elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
-elements.append(Spacer(1, 12))
 try:
     merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
     merkbadge.hAlign = 'CENTER'
