@@ -198,12 +198,13 @@ if advies_output:
             elements.append(Paragraph(regel.strip(), styles['Body']))
             elements.append(Spacer(1, 6))
 
-    # Witruimte (10 regels)
-    elements.append(Spacer(1, 160))
+    # Witruimte (2-3 regels)
+    elements.append(Spacer(1, 36))
+
 
     # IDDSI-afbeelding
     try:
-        iddsi_image = Image("images/iddsi_framework_070920.png", width=14*cm, height=14*cm)
+        iiddsi_image = Image("images/iddsi_framework_070920.png", width=11*cm)
         iddsi_image.hAlign = 'CENTER'
         elements.append(iddsi_image)
     except Exception as e:
@@ -212,8 +213,10 @@ if advies_output:
     # Disclaimer onder IDDSI
     elements.append(Spacer(1, 12))
     iddsi_disclaimer = (
-        "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie. "
-        "Zie iddsi.org voor meer informatie."
+        iddsi_disclaimer = (
+    "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie. "
+    "Zie iddsi.org voor meer informatie."
+)
     )
     elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
 
@@ -222,7 +225,7 @@ if advies_output:
 
     # Merkvermelding
     elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
-    elements.append(Spacer(1, 40))
+    elements.append(Spacer(1, 12))
     try:
         merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
         merkbadge.hAlign = 'CENTER'
