@@ -3,59 +3,53 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import locale
-try:
-    locale.setlocale(locale.LC_TIME, 'nl_NL.UTF-8')
-except locale.Error:
-    locale.setlocale(locale.LC_TIME, '')
-
-from fpdf import FPDF  # fpdf2 gebruiken voor volledige Unicode-ondersteuning
 from io import BytesIO
 import datetime
-
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.units import cm
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Image
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.styles import ParagraphStyle
 
+try:
+    locale.setlocale(locale.LC_TIME, 'nl_NL.UTF-8')
+except locale.Error:
+    locale.setlocale(locale.LC_TIME, '')
 
-# Laad de API key uit het .env-bestand
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=openai_api_key)
 
-# Resetlogica
 if st.session_state.get("reset", False):
-    import datetime
-    st.session_state["gender"] = "Dhr."
-    st.session_state["naam"] = ""
-    st.session_state["geboortedatum"] = datetime.date(2000, 1, 1)
-    st.session_state["zorgorganisatie"] = ""
-    st.session_state["locatie"] = ""
-    st.session_state["advies_datum"] = datetime.date.today()
-    st.session_state["geldigheid"] = "4 weken"
-    st.session_state["geldigheid_datum"] = datetime.date.today()
-    st.session_state["auteur"] = ""
-    st.session_state["functie"] = ""
-    st.session_state["advies"] = ""
-    st.session_state["toezicht"] = None
-    st.session_state["iddsi_vast"] = "Niveau 7: Normaal - makkelijk te kauwen"
-    st.session_state["iddsi_vloeibaar"] = "Niveau 0: Dun vloeibaar"
-    st.session_state["allergie"] = ""
-    st.session_state["voorkeuren"] = ""
-    st.session_state["reset"] = False
+    st.session_state.update({
+        "gender": "Dhr.",
+        "naam": "",
+        "geboortedatum": datetime.date(2000, 1, 1),
+        "zorgorganisatie": "",
+        "locatie": "",
+        "advies_datum": datetime.date.today(),
+        "geldigheid": "4 weken",
+        "geldigheid_datum": datetime.date.today(),
+        "auteur": "",
+        "functie": "",
+        "advies": "",
+        "toezicht": None,
+        "iddsi_vast": "Niveau 7: Normaal - makkelijk te kauwen",
+        "iddsi_vloeibaar": "Niveau 0: Dun vloeibaar",
+        "allergie": "",
+        "voorkeuren": "",
+        "reset": False
+    })
     st.rerun()
 
-# Streamlit UI
 st.image("logo_slikky.png", width=150)
 st.markdown("### Voedingsadvies bij slikproblemen")
 st.write("Voer het logopedisch advies in, geef IDDSI-niveaus en specifieke voorkeuren op.")
 
-# Gegevens cliënt
-st.subheader("📅 Cliëntgegevens (worden niet opgeslagen)")
+st.subheader("\U0001F4C5 Cliëntgegevens (worden niet opgeslagen)")
 col1, col2, col3 = st.columns([1, 3, 2])
 client_gender = col1.selectbox("Aanhef:", ["Dhr.", "Mevr.", "X"], key="gender")
 client_naam = col2.text_input("Naam van de cliënt:", key="naam")
@@ -79,23 +73,22 @@ col_creator1, col_creator2 = st.columns([2, 2])
 aangemaakt_door = col_creator1.text_input("Aangemaakt door:", key="auteur")
 functie = col_creator2.text_input("Functie:", key="functie")
 
-# Invoervelden
-advies = st.text_area("📜 Logopedisch advies:", key="advies")
+advies = st.text_area("\U0001F4DC Logopedisch advies:", key="advies")
 onder_toezicht_optie = st.radio(
-    "🚨 Moet de cliënt eten onder toezicht?",
+    "\U0001F6A8 Moet de cliënt eten onder toezicht?",
     options=["Ja", "Nee"],
     index=None,
     key="toezicht",
     help="Selecteer een van beide opties om verder te gaan."
 )
-iddsi_vast = st.selectbox("🍽️ Niveau voor voedsel:", [
+iddsi_vast = st.selectbox("\U0001F37D️ Niveau voor voedsel:", [
     "Niveau 3: Dik vloeibaar",
     "Niveau 4: Glad gemalen",
     "Niveau 5: Fijngemalen en smeuïg",
     "Niveau 6: Zacht & klein gesneden",
     "Niveau 7: Normaal - makkelijk te kauwen"
 ], key="iddsi_vast")
-iddsi_vloeibaar = st.selectbox("🥤 Niveau voor vloeistof:", [
+iddsi_vloeibaar = st.selectbox("\U0001F964 Niveau voor vloeistof:", [
     "Niveau 0: Dun vloeibaar",
     "Niveau 1: Licht vloeibaar",
     "Niveau 2: Matig vloeibaar",
@@ -104,11 +97,9 @@ iddsi_vloeibaar = st.selectbox("🥤 Niveau voor vloeistof:", [
 ], key="iddsi_vloeibaar")
 allergieën = st.text_input("⚠️ Allergieën (optioneel, scheid met komma's):", key="allergie")
 voorkeuren = st.text_input("✅ Voedselvoorkeuren (optioneel, scheid met komma's):", key="voorkeuren")
-
 advies_output = ""
 
-# Genereer het voedingsadvies
-if st.button("🎯 Genereer Voedingsprogramma"):
+if st.button("\U0001F3AF Genereer Voedingsprogramma"):
     if not advies:
         st.warning("⚠️ Voer eerst een logopedisch advies in.")
     elif onder_toezicht_optie not in ["Ja", "Nee"]:
@@ -146,9 +137,6 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 - Benoem te vermijden voeding  
 - Geef een voorbeeld dagmenu (ontbijt, lunch, diner, tussendoor)  
 - Geef alternatieven bij voorkeuren of allergieën
-
-Gebruik in het advies dezelfde Nederlandse IDDSI-terminologie zoals hierboven vermeld.  
-Zorg dat het advies duidelijk, praktisch en bruikbaar is voor een zorgverlener. Vermeld duidelijk als eten onder toezicht moet gebeuren.
 """
 
         try:
@@ -162,19 +150,18 @@ Zorg dat het advies duidelijk, praktisch en bruikbaar is voor een zorgverlener. 
             advies_output = response.choices[0].message.content
 
             if onder_toezicht_optie == "Ja":
-                st.subheader("🚨 Belangrijke waarschuwing")
+                st.subheader("\U0001F6A8 Belangrijke waarschuwing")
                 st.markdown(
-                    '<div style="background-color:#ffcccc;padding:15px;border-radius:10px;color:#990000;font-weight:bold;">🚨 Deze persoon mag alleen eten onder toezicht!</div>',
+                    '<div style="background-color:#ffcccc;padding:15px;border-radius:10px;color:#990000;font-weight:bold;">\U0001F6A8 Deze persoon mag alleen eten onder toezicht!</div>',
                     unsafe_allow_html=True
                 )
 
-            st.subheader("📋 Voedingsadvies:")
+            st.subheader("\U0001F4CB Voedingsadvies:")
             st.write(advies_output)
 
         except Exception as e:
             st.error(f"Er ging iets mis bij het ophalen van het advies: {e}")
 
-# Download als PDF
 if advies_output:
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
@@ -183,11 +170,11 @@ if advies_output:
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
     styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
+    styles.add(ParagraphStyle(name='Small', fontSize=9, leading=12, alignment=TA_LEFT))
 
-    # Logo
+    # Logo bovenaan
     try:
-        from reportlab.platypus import Image
-        logo = Image("logo_slikky.png", width=3.5*cm, height=3.5*cm)
+        logo = Image("images/logo_slikky.png", width=3.5*cm, height=3.5*cm)
         elements.append(logo)
     except Exception as e:
         elements.append(Paragraph("⚠️ Logo niet gevonden: " + str(e), styles['Body']))
@@ -198,24 +185,57 @@ if advies_output:
     elements.append(Paragraph("---", styles['Body']))
     elements.append(Spacer(1, 12))
 
+    # Toezicht-box
     if onder_toezicht_optie == "Ja":
-        toezicht_tekst = "🚨 Deze persoon mag alleen eten onder toezicht!"
+        toezicht_tekst = "\U0001F6A8 Deze persoon mag alleen eten onder toezicht!"
         toezicht_box = Paragraph(toezicht_tekst, styles["BoldBox"])
         elements.append(toezicht_box)
         elements.append(Spacer(1, 12))
 
+    # Inhoud advies
     for regel in advies_output.split("\n"):
-
         if regel.strip() != "":
             elements.append(Paragraph(regel.strip(), styles['Body']))
             elements.append(Spacer(1, 6))
 
+    # Witruimte (10 regels)
+    elements.append(Spacer(1, 160))
+
+    # IDDSI-afbeelding
+    try:
+        iddsi_image = Image("images/iddsi_framework_070920.png", width=14*cm, height=14*cm)
+        iddsi_image.hAlign = 'CENTER'
+        elements.append(iddsi_image)
+    except Exception as e:
+        elements.append(Paragraph("⚠️ IDDSI-afbeelding niet gevonden: " + str(e), styles['Body']))
+
+    # Disclaimer onder IDDSI
+    elements.append(Spacer(1, 12))
+    iddsi_disclaimer = (
+        "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie. "
+        "Zie iddsi.org voor meer informatie."
+    )
+    elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
+
+    # Witruimte (10 regels)
+    elements.append(Spacer(1, 160))
+
+    # Merkvermelding
+    elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
+    elements.append(Spacer(1, 40))
+    try:
+        merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
+        merkbadge.hAlign = 'CENTER'
+        elements.append(merkbadge)
+    except Exception as e:
+        elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
+
+    # Pagina-header/footer
     def header_footer(canvas, doc):
         canvas.saveState()
         canvas.setFont('Helvetica', 9)
         titel = f"Voedingsadvies voor {client_gender} {client_naam} ({client_geboortedatum.strftime('%d/%m/%Y')})"
         canvas.drawString(2 * cm, A4[1] - 1.5 * cm, titel)
-
         page_num = f"Pagina {doc.page}"
         canvas.drawRightString(A4[0] - 2 * cm, 1.5 * cm, page_num)
         canvas.restoreState()
@@ -224,18 +244,8 @@ if advies_output:
     buffer.seek(0)
 
     st.download_button(
-        label="💾 Opslaan als PDF",
+        label="\U0001F4BE Opslaan als PDF",
         data=buffer,
         file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
         mime="application/pdf"
     )
-
-    st.markdown("""
-    ---
-    *Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
-    """)
-
-# Resetknop onderaan
-if st.button("🔁 Formulier resetten"):
-    st.session_state["reset"] = True
-    st.rerun()
