@@ -167,68 +167,29 @@ if advies_output:
     pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
 
     elements = []
-    iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
 
-# Merkvermelding
-    styles = getSampleStyleSheet()
+    # Disclaimer IDDSI + SLIKKY
+    iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
+    elements.append(Paragraph(iddsi_disclaimer, ParagraphStyle(name='Small', fontSize=9, leading=12, alignment=TA_LEFT)))
+
     elements.append(Spacer(1, 160))
-    elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
+    elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT)))
     elements.append(Spacer(1, 12))
+
+    # Stijlen
+    styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
     styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
     styles.add(ParagraphStyle(name='Small', fontSize=9, leading=12, alignment=TA_LEFT))
 
-    # Logo bovenaan
+    # Logo onderaan
     try:
-        logo = Image("images/logo_slikky.png", width=3.5*cm, height=3.5*cm)
-        elements.append(logo)
+        merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
+        merkbadge.hAlign = 'CENTER'
+        elements.append(merkbadge)
     except Exception as e:
-        elements.append(Paragraph("⚠️ Logo niet gevonden: " + str(e), styles['Body']))
+        elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
 
-    elements.append(Spacer(1, 12))
-    elements.append(Paragraph("---", styles['Body']))
-    elements.append(Paragraph("Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.", styles['Body']))
-    elements.append(Paragraph("---", styles['Body']))
-    elements.append(Spacer(1, 12))
-
-    # Toezicht-box
-    if onder_toezicht_optie == "Ja":
-        toezicht_tekst = "\U0001F6A8 Deze persoon mag alleen eten onder toezicht!"
-        toezicht_box = Paragraph(toezicht_tekst, styles["BoldBox"])
-        elements.append(toezicht_box)
-        elements.append(Spacer(1, 12))
-
-    # Inhoud advies
-    for regel in advies_output.split("\n"):
-        if regel.strip() != "":
-            elements.append(Paragraph(regel.strip(), styles['Body']))
-            elements.append(Spacer(1, 6))
-
-    # Witruimte (2-3 regels)
-    elements.append(Spacer(1, 36))
-
-
-    # IDDSI-afbeelding
-    try:
-        iiddsi_image = Image("images/iddsi_framework_070920.png", width=11*cm)
-        iddsi_image.hAlign = 'CENTER'
-        elements.append(iddsi_image)
-    except Exception as e:
-        elements.append(Paragraph("⚠️ IDDSI-afbeelding niet gevonden: " + str(e), styles['Body']))
-
-    # Disclaimer onder IDDSI
-    elements.append(Spacer(1, 12))
-
-# Witruimte (10 regels)
-
-try:
-    merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
-    merkbadge.hAlign = 'CENTER'
-    elements.append(merkbadge)
-except Exception as e:
-    elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
-
-    # Pagina-header/footer
     def header_footer(canvas, doc):
         canvas.saveState()
         canvas.setFont('Helvetica', 9)
