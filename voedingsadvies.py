@@ -226,8 +226,10 @@ if advies_output:
 
 st.markdown("""
 ---
-*Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
-""")
+*Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*""")
+
+
+
 
 if st.button("\U0001F501 Formulier resetten"):
     st.session_state["reset"] = True
