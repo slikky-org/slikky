@@ -168,19 +168,27 @@ if advies_output:
 
     elements = []
 
-    # Disclaimer IDDSI + SLIKKY
-    iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
-    elements.append(Paragraph(iddsi_disclaimer, ParagraphStyle(name='Small', fontSize=9, leading=12, alignment=TA_LEFT)))
-
-    elements.append(Spacer(1, 160))
-    elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT)))
-    elements.append(Spacer(1, 12))
-
     # Stijlen
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
     styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
     styles.add(ParagraphStyle(name='Small', fontSize=9, leading=12, alignment=TA_LEFT))
+
+    # Adviesregels verwerken in PDF
+    for regel in advies_output.split("\n"):
+        if regel.strip() != "":
+            elements.append(Paragraph(regel.strip(), styles['Body']))
+            elements.append(Spacer(1, 6))
+
+    # Disclaimer IDDSI
+    elements.append(Spacer(1, 160))
+    iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
+    elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
+
+    # Merkvermelding
+    elements.append(Spacer(1, 36))
+    elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
+    elements.append(Spacer(1, 12))
 
     # Logo onderaan
     try:
@@ -190,6 +198,7 @@ if advies_output:
     except Exception as e:
         elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
 
+    # Pagina-header/footer
     def header_footer(canvas, doc):
         canvas.saveState()
         canvas.setFont('Helvetica', 9)
