@@ -118,6 +118,7 @@ iddsi_vloeibaar = st.selectbox("\U0001F964 Niveau voor vloeistof:", [
 allergieën = st.text_input("⚠️ Allergieën (optioneel, scheid met komma's):", key="allergie")
 voorkeuren = st.text_input("✅ Voedselvoorkeuren (optioneel, scheid met komma's):", key="voorkeuren")
 
+prompt = f"""
 **1. Logopedisch advies**  
 Herhaal het advies dat is ingevoerd.
 
@@ -138,6 +139,7 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 - Geef een voorbeeld dagmenu (ontbijt, lunch, diner, tussendoor)  
 - Geef alternatieven bij voorkeuren of allergieën
 """
+
 
         try:
             response = client.chat.completions.create(
