@@ -167,30 +167,37 @@ if advies_output:
     pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
 
     elements = []
-
-    # Stijlen
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
     styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
-    styles.add(ParagraphStyle(name='Small', fontSize=9, leading=12, alignment=TA_LEFT))
 
-    # Adviesregels verwerken in PDF
+    try:
+        logo = Image("logo_slikky.png", width=3.5*cm, height=3.5*cm)
+        elements.append(logo)
+    except Exception as e:
+        elements.append(Paragraph("⚠️ Logo niet gevonden: " + str(e), styles['Body']))
+
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph("---", styles['Body']))
+    elements.append(Paragraph("Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.", styles['Body']))
+    elements.append(Paragraph("---", styles['Body']))
+    elements.append(Spacer(1, 12))
+
+    if onder_toezicht_optie == "Ja":
+        toezicht_tekst = "\U0001F6A8 Deze persoon mag alleen eten onder toezicht!"
+        toezicht_box = Paragraph(toezicht_tekst, styles["BoldBox"])
+        elements.append(toezicht_box)
+        elements.append(Spacer(1, 12))
+
     for regel in advies_output.split("\n"):
         if regel.strip() != "":
             elements.append(Paragraph(regel.strip(), styles['Body']))
             elements.append(Spacer(1, 6))
 
-    # Disclaimer IDDSI
-    elements.append(Spacer(1, 160))
-    iddsi_disclaimer = "Het gebruik van het IDDSI-framework in dit document is in overeenstemming met de CC BY-SA 4.0 licentie.\nZie iddsi.org voor meer informatie."
-    elements.append(Paragraph(iddsi_disclaimer, styles["Small"]))
-
-    # Merkvermelding
-    elements.append(Spacer(1, 36))
+    elements.append(Spacer(1, 60))
     elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
-    elements.append(Spacer(1, 12))
+    elements.append(Spacer(1, 40))
 
-    # Logo onderaan
     try:
         merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
         merkbadge.hAlign = 'CENTER'
@@ -198,7 +205,6 @@ if advies_output:
     except Exception as e:
         elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
 
-    # Pagina-header/footer
     def header_footer(canvas, doc):
         canvas.saveState()
         canvas.setFont('Helvetica', 9)
@@ -217,3 +223,12 @@ if advies_output:
         file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
         mime="application/pdf"
     )
+
+st.markdown("""
+---
+*Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
+""")
+
+if st.button("\U0001F501 Formulier resetten"):
+    st.session_state["reset"] = True
+    st.rerun()
