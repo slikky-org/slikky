@@ -73,27 +73,7 @@ col_creator1, col_creator2 = st.columns([2, 2])
 aangemaakt_door = col_creator1.text_input("Aangemaakt door:", key="auteur")
 functie = col_creator2.text_input("Functie:", key="functie")
 
-# Nieuw: Uitklapbare hulptekst + placeholder voor logopedisch advies
-with st.expander("ℹ️ Tips voor het invoeren van logopedisch advies"):
-    st.markdown("""
-    Geef een helder en volledig logopedisch advies. Hoe concreter, hoe beter.
-
-    **Voorbeeld:**
-    > Cliënt met slikproblemen. IDDSI-niveau vast: 5, vloeibaar: 2. Vermijden van harde stukjes. Leeftijd: 75 jaar. Eet zelfstandig. Graag tips over structuur en temperatuur.
-
-    **Vermeld indien mogelijk:**
-    - IDDSI-niveaus voor vast en vloeibaar
-    - Leeftijd en zelfstandigheid van cliënt
-    - Beperkingen of risico’s (droge mond, cognitieve achteruitgang)
-    - Wensen rond structuur, temperatuur of maaltijdmomenten
-    """)
-
-advies = st.text_area(
-    "\U0001F4DC Logopedisch advies:",
-    key="advies",
-    placeholder="Bijv: Cliënt met slikproblemen. IDDSI-niveau vast: 5, vloeibaar: 2. Vermijden van harde stukjes. Leeftijd: 75 jaar. Eet zelfstandig. Graag tips over structuur."
-)
-
+advies = st.text_area("\U0001F4DC Logopedisch advies:", key="advies")
 onder_toezicht_optie = st.radio(
     "\U0001F6A8 Moet de cliënt eten onder toezicht?",
     options=["Ja", "Nee"],
@@ -117,8 +97,27 @@ iddsi_vloeibaar = st.selectbox("\U0001F964 Niveau voor vloeistof:", [
 ], key="iddsi_vloeibaar")
 allergieën = st.text_input("⚠️ Allergieën (optioneel, scheid met komma's):", key="allergie")
 voorkeuren = st.text_input("✅ Voedselvoorkeuren (optioneel, scheid met komma's):", key="voorkeuren")
+advies_output = ""
 
-prompt = f"""
+if st.button("\U0001F3AF Genereer Voedingsprogramma"):
+    if not advies:
+        st.warning("⚠️ Voer eerst een logopedisch advies in.")
+    elif onder_toezicht_optie not in ["Ja", "Nee"]:
+        st.warning("⚠️ Kies of de cliënt onder toezicht moet eten.")
+    else:
+        toezicht_tekst = "De cliënt moet eten onder toezicht." if onder_toezicht_optie == "Ja" else "De cliënt hoeft niet onder toezicht te eten."
+        client_label = f"{client_gender} {client_naam} ({client_geboortedatum.strftime('%d/%m/%Y')})"
+        geldigheid_tekst = geldigheid_datum.strftime('%d/%m/%Y') if geldigheid_datum else f"{geldigheid_optie} vanaf {advies_datum.strftime('%d/%m/%Y')}"
+
+        prompt = f"""
+Je bent een AI-diëtist die voedingsprogramma's opstelt op basis van logopedisch advies.
+
+Toon deze regels vetgedrukt bovenaan het advies:
+**Dit voedingsadvies is bedoeld voor {client_label}.**
+**Geldig tot: {geldigheid_tekst}**
+**Zorgorganisatie: {zorgorganisatie} | Locatie: {locatie}**
+**Aangemaakt door: {aangemaakt_door} ({functie})**
+
 **1. Logopedisch advies**  
 Herhaal het advies dat is ingevoerd.
 
@@ -140,26 +139,25 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 - Geef alternatieven bij voorkeuren of allergieën
 """
 
+        try:
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "Je bent een AI gespecialiseerd in voedingsadvies voor cliënten met slikproblemen."},
+                    {"role": "user", "content": prompt}
+                ]
+            )
+            advies_output = response.choices[0].message.content
 
-try:
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Je bent een AI gespecialiseerd in voedingsadvies voor cliënten met slikproblemen."},
-            {"role": "user", "content": prompt}
-        ]
-    )
-    advies_output = response.choices[0].message.content
+            if onder_toezicht_optie == "Ja":
+                st.subheader("\U0001F6A8 Belangrijke waarschuwing")
+                st.markdown(
+                    '<div style="background-color:#ffcccc;padding:15px;border-radius:10px;color:#990000;font-weight:bold;">\U0001F6A8 Deze persoon mag alleen eten onder toezicht!</div>',
+                    unsafe_allow_html=True
+                )
 
-    if onder_toezicht_optie == "Ja":
-        st.subheader("\U0001F6A8 Belangrijke waarschuwing")
-        st.markdown(
-            '<div style="background-color:#ffcccc;padding:15px;border-radius:10px;color:#990000;font-weight:bold;">\U0001F6A8 Deze persoon mag alleen eten onder toezicht!</div>',
-            unsafe_allow_html=True
-        )
-
-    st.subheader("\U0001F4CB Voedingsadvies:")
-    st.write(advies_output)
+            st.subheader("\U0001F4CB Voedingsadvies:")
+            st.write(advies_output)
 
         except Exception as e:
             st.error(f"Er ging iets mis bij het ophalen van het advies: {e}")
@@ -226,17 +224,13 @@ if advies_output:
         mime="application/pdf"
     )
 
-st.markdown("Testje werkt ✅")
-
-
-
-
-
-
-
-
-
+st.markdown("""
+---
+*Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
+""")
 
 if st.button("\U0001F501 Formulier resetten"):
     st.session_state["reset"] = True
     st.rerun()
+
+
