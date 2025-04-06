@@ -226,7 +226,10 @@ if advies_output:
 
 st.markdown("""
 ---
-*Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*""")
+*Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
+""")
+
+
 
 
 
