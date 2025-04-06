@@ -141,25 +141,25 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 """
 
 
-        try:
-            response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "Je bent een AI gespecialiseerd in voedingsadvies voor cliënten met slikproblemen."},
-                    {"role": "user", "content": prompt}
-                ]
-            )
-            advies_output = response.choices[0].message.content
+try:
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Je bent een AI gespecialiseerd in voedingsadvies voor cliënten met slikproblemen."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    advies_output = response.choices[0].message.content
 
-            if onder_toezicht_optie == "Ja":
-                st.subheader("\U0001F6A8 Belangrijke waarschuwing")
-                st.markdown(
-                    '<div style="background-color:#ffcccc;padding:15px;border-radius:10px;color:#990000;font-weight:bold;">\U0001F6A8 Deze persoon mag alleen eten onder toezicht!</div>',
-                    unsafe_allow_html=True
-                )
+    if onder_toezicht_optie == "Ja":
+        st.subheader("\U0001F6A8 Belangrijke waarschuwing")
+        st.markdown(
+            '<div style="background-color:#ffcccc;padding:15px;border-radius:10px;color:#990000;font-weight:bold;">\U0001F6A8 Deze persoon mag alleen eten onder toezicht!</div>',
+            unsafe_allow_html=True
+        )
 
-            st.subheader("\U0001F4CB Voedingsadvies:")
-            st.write(advies_output)
+    st.subheader("\U0001F4CB Voedingsadvies:")
+    st.write(advies_output)
 
         except Exception as e:
             st.error(f"Er ging iets mis bij het ophalen van het advies: {e}")
