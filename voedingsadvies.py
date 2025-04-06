@@ -224,12 +224,14 @@ if advies_output:
         mime="application/pdf"
     )
 
-st.markdown(
-    """
+tekst = """
 ---
 *Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.*
 """
-)
+st.markdown(tekst)
+
+
+
 
 
 
