@@ -39,7 +39,7 @@ if st.session_state.get("reset", False):
         "toezicht": None,
         "iddsi_vast": "Niveau 7: Normaal - makkelijk te kauwen",
         "iddsi_vloeibaar": "Niveau 0: Dun vloeibaar",
-        "allergie": "",
+        "allergieën": "",
         "voorkeuren": "",
         "reset": False
     })
@@ -49,11 +49,24 @@ st.image("logo_slikky.png", width=150)
 st.markdown("### Voedingsadvies bij slikproblemen")
 st.write("Voer het logopedisch advies in, geef IDDSI-niveaus en specifieke voorkeuren op.")
 
+# Helpsectie (optioneel inklapbaar)
+with st.expander("ℹ️ Hulp nodig bij het invullen?"):
+    st.markdown("""
+    **Uitleg bij de velden:**
+
+    - **IDDSI-niveaus:** Kies het niveau dat past bij de slikmogelijkheden van de cliënt. IDDSI is een internationale standaard.
+    - **Voorkeuren en allergieën:** Vul dit in als de cliënt bepaalde producten liever wel of niet eet, of ergens allergisch voor is.
+    - **Toezicht:** Kies 'Ja' als er toezicht nodig is bij eten of drinken – er wordt dan een waarschuwing toegevoegd aan het advies.
+
+    ℹ️ *Tip: velden mogen leeg blijven als iets niet van toepassing is.*
+    """)
+
 st.subheader("\U0001F4C5 Cliëntgegevens (worden niet opgeslagen)")
 col1, col2, col3 = st.columns([1, 3, 2])
 client_gender = col1.selectbox("Aanhef:", ["Dhr.", "Mevr.", "X"], key="gender")
 client_naam = col2.text_input("Naam van de cliënt:", key="naam")
 client_geboortedatum = col3.date_input("Geboortedatum:", format="DD/MM/YYYY", min_value=datetime.date(1933, 1, 1), max_value=datetime.date.today(), key="geboortedatum")
+
 
 col_org1, col_org2 = st.columns([2, 2])
 zorgorganisatie = col_org1.text_input("Zorgorganisatie:", key="zorgorganisatie")
