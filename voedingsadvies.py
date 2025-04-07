@@ -81,13 +81,13 @@ onder_toezicht_optie = st.radio(
     key="toezicht",
     help="Selecteer een van beide opties om verder te gaan."
 )
-iddsi_vast = st.selectbox("\U0001F37D️ Niveau voor voedsel:", [
+iddsi_vast = st.selectbox("Niveau voor voedsel:", [
     "Niveau 3: Dik vloeibaar",
     "Niveau 4: Glad gemalen",
     "Niveau 5: Fijngemalen en smeuïg",
     "Niveau 6: Zacht & klein gesneden",
     "Niveau 7: Normaal - makkelijk te kauwen"
-], key="iddsi_vast")
+], index=4, key="iddsi_vast")
 iddsi_vloeibaar = st.selectbox("\U0001F964 Niveau voor vloeistof:", [
     "Niveau 0: Dun vloeibaar",
     "Niveau 1: Licht vloeibaar",
@@ -232,5 +232,3 @@ st.markdown("""
 if st.button("\U0001F501 Formulier resetten"):
     st.session_state["reset"] = True
     st.rerun()
-
-
