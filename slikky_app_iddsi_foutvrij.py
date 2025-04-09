@@ -37,6 +37,8 @@ if st.session_state.get("reset", False):
         "functie": "",
         "advies": "",
         "toezicht": None,
+        "iddsi_vast": "Niveau 7: Normaal - makkelijk te kauwen",
+        "iddsi_vloeibaar": "Niveau 0: Dun vloeibaar",
         "allergieën": "",
         "voorkeuren": "",
         "reset": False

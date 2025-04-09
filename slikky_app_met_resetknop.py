@@ -37,6 +37,8 @@ if st.session_state.get("reset", False):
         "functie": "",
         "advies": "",
         "toezicht": None,
+        "iddsi_vast": "Niveau 7: Normaal - makkelijk te kauwen",
+        "iddsi_vloeibaar": "Niveau 0: Dun vloeibaar",
         "allergieën": "",
         "voorkeuren": "",
         "reset": False
@@ -145,11 +147,11 @@ Herhaal het advies dat is ingevoerd.
 Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 
 **3. Belangrijke gegevens**  
-- IDDSI niveau voedsel: {iddsi_vast}  
-- IDDSI niveau vloeistof: {iddsi_vloeibaar}  
 - Logopedisch advies: {advies}  
 - Allergieën: {allergieën}  
 - Voedselvoorkeuren: {voorkeuren}  
+- Niveau voor voedsel: {iddsi_vast}  
+- Niveau voor vloeistof: {iddsi_vloeibaar}  
 - {toezicht_tekst}
 - {hulp_tekst}
 
