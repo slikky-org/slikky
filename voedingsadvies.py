@@ -154,10 +154,10 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 - {hulp_tekst}
 
 **4. Concreet voedingsprogramma**  
-- Geef aanbevolen voedingsmiddelen  
-- Benoem te vermijden voeding  
+- Geef maximaal 3 aanbevolen voedingsmiddelen per categorie (bijv. vast en vloeibaar)  
+- Benoem maximaal 3 voedingsmiddelen die moeten worden vermeden  
 - Geef een voorbeeld dagmenu (ontbijt, lunch, diner, tussendoor)  
-- Geef alternatieven bij voorkeuren of allergieën
+- Geef maximaal 3 alternatieven bij voorkeuren of allergieën
 """
 
         try:
