@@ -73,3 +73,24 @@ Overzicht van alle versies van `voedingsadvies.py` met ISO-chronologie en beschr
 - Getest met voorbeeldadviezen (zoals 'Piet Janssen') en gecontroleerd in PDF-output  
 - Geen verdere codewijziging nodig dankzij duidelijke instructie aan GPT in de prompt
 
+---
+## ✅ Versie BU20250424-01  
+**Datum:** 2025-04-24  
+**Status:** ✅ Getest / ✅ Gepusht naar GitHub / ✅ Gedeployed op Streamlit  
+
+**Wijzigingen:**  
+- Eerste officiële versie van `slikky_pro_v1_250424.py` (SLIKKY® Premium)
+- Volledige integratie van OpenAI-call en promptopbouw in premiumformaat
+- Nieuwe PDF-export met vetgedrukte regels en begeleidingswaarschuwingen
+- Filtersysteem voor uitsluitingen actief en dynamisch toegepast
+- IDDSI-integratie (vast en vloeibaar), geldigheidslogica en locatie-/auteurvermelding
+- App live gezet op Streamlit: [slikky-premium-v1.streamlit.app](https://slikky-premium-v1.streamlit.app)
+- Secrets-omgeving correct ingericht op Streamlit (API-key beveiligd)
+- README.md toegevoegd in repo  
+- Tijdelijk openbaar gezet, upgrade- en privacymogelijkheden worden onderzocht
+
+**Bestandsnaam:**  
+- `slikky_pro_v1_250424.py`
+
+---
+
