@@ -9,22 +9,20 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.units import cm
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Image
 from reportlab.lib.enums import TA_LEFT
+from reportlab.lib.styles import ParagraphStyle
 
-# Locale instellen voor datumweergave
 try:
     locale.setlocale(locale.LC_TIME, 'nl_NL.UTF-8')
 except locale.Error:
     locale.setlocale(locale.LC_TIME, '')
 
-# API sleutel laden
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=openai_api_key)
 
-# Resetknop voor formulier
 if st.session_state.get("reset", False):
     st.session_state.update({
         "gender": "Dhr.",
@@ -45,9 +43,9 @@ if st.session_state.get("reset", False):
     })
     st.rerun()
 
-# Interface
 st.image("logo_slikky.png", width=150)
 st.markdown("### Voedingsadvies bij slikproblemen")
+st.write("Voer het logopedisch advies in, geef IDDSI-niveaus en specifieke voorkeuren op.")
 
 st.subheader("🗓️ Cliëntgegevens (worden niet opgeslagen)")
 col1, col2, col3 = st.columns([1, 3, 2])
@@ -78,16 +76,18 @@ onder_toezicht_optie = st.radio(
     "🚨 Moet de cliënt eten onder toezicht?",
     options=["Ja", "Nee"],
     index=None,
-    key="toezicht"
+    key="toezicht",
+    help="Selecteer een van beide opties om verder te gaan."
 )
 
-# Extra vraag indien onder toezicht
+# Dynamisch hulpveld
 if onder_toezicht_optie == "Ja":
     hulp_bij_eten_optie = st.radio(
         "👐 Moet de cliënt geholpen worden met eten?",
         options=["Ja", "Nee"],
         index=None,
-        key="hulp_bij_eten_radio"
+        key="hulp_bij_eten_radio",
+        help="Selecteer een van beide opties om verder te gaan."
     )
 else:
     hulp_bij_eten_optie = None
@@ -170,6 +170,7 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
             )
             advies_output = response.choices[0].message.content
 
+            
             st.subheader("🚨 Belangrijke waarschuwing")
             if onder_toezicht_optie == "Ja":
                 st.markdown(
@@ -185,85 +186,83 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
             st.subheader("📋 Voedingsadvies:")
             st.write(advies_output)
 
-            # PDF-GENERATIE MET VETGEDRUKTE REGELS
-            buffer = BytesIO()
+            if onder_toezicht_optie == "Ja":
+                buffer = BytesIO()
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.lib.enums import TA_LEFT
+            from reportlab.lib import colors
+
+            pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
+
+            elements = []
+            styles = getSampleStyleSheet()
+            styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
+            styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
 
             try:
-                pdf = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
-
-                elements = []
-                styles = getSampleStyleSheet()
-                styles.add(ParagraphStyle(name='Body', fontSize=11, leading=16, alignment=TA_LEFT))
-                styles.add(ParagraphStyle(name='BoldBox', fontSize=12, leading=16, alignment=TA_LEFT, textColor=colors.red))
-                styles.add(ParagraphStyle(name='BoldBody', fontSize=11, leading=16, alignment=TA_LEFT, fontName='Helvetica-Bold'))
-
-                try:
-                    logo = Image("logo_slikky.png", width=3.5*cm, height=3.5*cm)
-                    elements.append(logo)
-                except Exception as e:
-                    elements.append(Paragraph("⚠️ Logo niet gevonden: " + str(e), styles['Body']))
-
-                elements.append(Spacer(1, 12))
-                elements.append(Paragraph("---", styles['Body']))
-                elements.append(Paragraph("Deze app slaat géén cliëntgegevens op.", styles['Body']))
-                elements.append(Paragraph("---", styles['Body']))
-                elements.append(Spacer(1, 12))
-
-                if onder_toezicht_optie == "Ja":
-                    toezicht_box = Paragraph("\U0001F6A8 Deze persoon mag alleen eten onder toezicht!", styles["BoldBox"])
-                    elements.append(toezicht_box)
-                    elements.append(Spacer(1, 12))
-
-                if hulp_bij_eten_optie == "Ja":
-                    hulp_box = Paragraph("\u26A0\ufe0f Deze persoon moet geholpen worden met eten!", styles["BoldBox"])
-                    elements.append(hulp_box)
-                    elements.append(Spacer(1, 12))
-
-                for regel in advies_output.split("\n"):
-                    if regel.strip() != "":
-                        if regel.strip().startswith("**") and regel.strip().endswith("**"):
-                            tekst_zonder_sterren = regel.strip().strip("*")
-                            elements.append(Paragraph(tekst_zonder_sterren, styles['BoldBody']))
-                        else:
-                            elements.append(Paragraph(regel.strip(), styles['Body']))
-                        elements.append(Spacer(1, 6))
-
-                elements.append(Spacer(1, 60))
-                elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
-                elements.append(Spacer(1, 40))
-
-                try:
-                    merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
-                    merkbadge.hAlign = 'CENTER'
-                    elements.append(merkbadge)
-                except Exception as e:
-                    elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
-
-                def header_footer(canvas, doc):
-                    canvas.saveState()
-                    canvas.setFont('Helvetica', 9)
-                    titel = f"Voedingsadvies voor {client_gender} {client_naam} ({client_geboortedatum.strftime('%d/%m/%Y')})"
-                    canvas.drawString(2 * cm, A4[1] - 1.5 * cm, titel)
-                    page_num = f"Pagina {doc.page}"
-                    canvas.drawRightString(A4[0] - 2 * cm, 1.5 * cm, page_num)
-                    canvas.restoreState()
-
-                pdf.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
-                buffer.seek(0)
-
-                st.download_button(
-                    label="💾 Opslaan als PDF",
-                    data=buffer,
-                    file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
-                    mime="application/pdf"
-                )
-
+                logo = Image("logo_slikky.png", width=3.5*cm, height=3.5*cm)
+                elements.append(logo)
             except Exception as e:
-                st.error(f"Er ging iets mis bij het genereren van de PDF: {e}")
+                elements.append(Paragraph("⚠️ Logo niet gevonden: " + str(e), styles['Body']))
+
+            elements.append(Spacer(1, 12))
+            elements.append(Paragraph("---", styles['Body']))
+            elements.append(Paragraph("Deze app slaat géén cliëntgegevens op. Alle ingevoerde data verdwijnt zodra het advies is gegenereerd.", styles['Body']))
+            elements.append(Paragraph("---", styles['Body']))
+            elements.append(Spacer(1, 12))
+
+            if onder_toezicht_optie == "Ja":
+                toezicht_box = Paragraph("\U0001F6A8 Deze persoon mag alleen eten onder toezicht!", styles["BoldBox"])
+                elements.append(toezicht_box)
+                elements.append(Spacer(1, 12))
+
+            if hulp_bij_eten_optie == "Ja":
+                hulp_box = Paragraph("\u26A0\ufe0f Deze persoon moet geholpen worden met eten!", styles["BoldBox"])
+                elements.append(hulp_box)
+                elements.append(Spacer(1, 12))
+
+            for regel in advies_output.split("\n"):
+                if regel.strip() != "":
+                    elements.append(Paragraph(regel.strip(), styles['Body']))
+                    elements.append(Spacer(1, 6))
+
+            elements.append(Spacer(1, 60))
+            elements.append(Paragraph("SLIKKY is een officieel geregistreerd merk (Benelux, 2025)", styles['Body']))
+            elements.append(Spacer(1, 40))
+
+            try:
+                merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
+                merkbadge.hAlign = 'CENTER'
+                elements.append(merkbadge)
+            except Exception as e:
+                elements.append(Paragraph("⚠️ Merkbadge niet gevonden: " + str(e), styles['Body']))
+
+            def header_footer(canvas, doc):
+                canvas.saveState()
+                canvas.setFont('Helvetica', 9)
+                titel = f"Voedingsadvies voor {client_gender} {client_naam} ({client_geboortedatum.strftime('%d/%m/%Y')})"
+                canvas.drawString(2 * cm, A4[1] - 1.5 * cm, titel)
+                page_num = f"Pagina {doc.page}"
+                canvas.drawRightString(A4[0] - 2 * cm, 1.5 * cm, page_num)
+                canvas.restoreState()
+
+            pdf.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
+            buffer.seek(0)
+
+            st.download_button(
+                label="💾 Opslaan als PDF",
+                data=buffer,
+                file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
+                mime="application/pdf"
+            )
+
 
         except Exception as e:
             st.error(f"Er ging iets mis bij het ophalen van het advies: {e}")
 
+
 if st.button("🔁 Herstel alle velden"):
     st.session_state["reset"] = True
     st.rerun()
+

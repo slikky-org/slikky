@@ -20,8 +20,8 @@ Overzicht van alle versies van `voedingsadvies.py` met ISO-chronologie en beschr
 **Status:** ✅ Getest  
 
 **Wijzigingen:**  
-- Filtersysteem actief: gluten, varkensvlees, lactose, suiker, noten, rauw voedsel 
-**Let op:** Het filtersysteem is in deze versie getest maar uiteindelijk **niet geïmplementeerd** vanwege foutmeldingen. Wordt herzien in een latere versie. 
+- Filtersysteem actief: gluten, varkensvlees, lactose, suiker, noten, rauw voedsel  
+**Let op:** Het filtersysteem is in deze versie getest maar uiteindelijk **niet geïmplementeerd** vanwege foutmeldingen. Wordt herzien in een latere versie.  
 - Subheader '🔍 Voedingsmiddelenfilter (optioneel)' toegevoegd  
 - Back-up BU0704002 als stabiele versie teruggezet
 
@@ -33,7 +33,7 @@ Overzicht van alle versies van `voedingsadvies.py` met ISO-chronologie en beschr
 
 **Wijzigingen:**  
 - Kleine update na filtertest  
-- Bugfix of optimalisatie van UI verwacht  
+- Bugfix of optimalisatie van UI verwacht
 
 ---
 
@@ -61,3 +61,15 @@ Overzicht van alle versies van `voedingsadvies.py` met ISO-chronologie en beschr
 
 **Back-up locatie:**  
 - `backup_0904/BU20250409-01.py`
+
+---
+
+## ✅ Versie BU20250418-01  
+**Datum:** 2025-04-18  
+**Status:** ✅ Getest / ✅ Gepusht naar GitHub  
+
+**Wijzigingen:**  
+- Promptregel aangepast zodat AI-output in de basisversie maximaal 3 suggesties per onderdeel geeft  
+- Getest met voorbeeldadviezen (zoals 'Piet Janssen') en gecontroleerd in PDF-output  
+- Geen verdere codewijziging nodig dankzij duidelijke instructie aan GPT in de prompt
+
