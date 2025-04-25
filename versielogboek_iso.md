@@ -88,6 +88,7 @@ Overzicht van alle versies van `voedingsadvies.py` met ISO-chronologie en beschr
 - Secrets-omgeving correct ingericht op Streamlit (API-key beveiligd)
 - README.md toegevoegd in repo  
 - Tijdelijk openbaar gezet, upgrade- en privacymogelijkheden worden onderzocht
+- 25-04-2025 – Projectomgeving opgeschoond, OpenAI-key correct gedeployed op Streamlit Cloud (premium)
 
 **Bestandsnaam:**  
 - `slikky_pro_v1_250424.py`
