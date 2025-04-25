@@ -49,7 +49,7 @@ if st.session_state.get("reset", False):
 st.image("logo_slikky.png", width=150)
 st.markdown("### Voedingsadvies bij slikproblemen")
 
-st.subheader("🗓️ Cliëntgegevens (worden niet opgeslagen)")
+st.subheader("🔒 Cliëntgegevens (worden niet opgeslagen)")
 col1, col2, col3 = st.columns([1, 3, 2])
 client_gender = col1.selectbox("Aanhef:", ["Dhr.", "Mevr.", "X"], key="gender")
 client_naam = col2.text_input("Naam van de cliënt:", key="naam")
