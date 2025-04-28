@@ -5,6 +5,22 @@ from openai import OpenAI
 import locale
 from io import BytesIO
 import datetime
+def tel_gebruik():
+    bestand = 'slikky_log.csv'
+    bestaat = os.path.isfile(bestand)
+    tijdstip = datetime.datetime.now().strftime("%Y-%m-%d,%H:%M:%S")
+
+    if bestaat:
+        with open(bestand, 'r') as file:
+            regels = file.readlines()
+            gebruik_id = len(regels)
+    else:
+        gebruik_id = 1
+
+    with open(bestand, 'a') as file:
+        if not bestaat:
+            file.write('Datum,Tijd,Gebruik_ID,Advies_Type\n')  # header
+        file.write(f"{tijdstip.split(',')[0]},{tijdstip.split(',')[1]},{gebruik_id},Basis\n")
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
@@ -250,6 +266,8 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 
                 pdf.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
                 buffer.seek(0)
+
+                tel_gebruik()
 
                 st.download_button(
                     label="💾 Opslaan als PDF",
