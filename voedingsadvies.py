@@ -146,7 +146,7 @@ if st.button("🎯 Genereer Voedingsprogramma"):
         client_label = f"{client_gender} {client_naam} ({client_geboortedatum.strftime('%d/%m/%Y')})"
         geldigheid_tekst = geldigheid_datum.strftime('%d/%m/%Y') if geldigheid_datum else f"{geldigheid_optie} vanaf {advies_datum.strftime('%d/%m/%Y')}"
 
-        prompt = f"""Je bent een AI-diëtist die voedingsprogramma's opstelt op basis van logopedisch advies.
+        golden_prompt = f"""Je bent een professionele AI-diëtist en logopedisch voedingsadviseur, gespecialiseerd in het samenstellen van voedingsadviezen voor cliënten met slikproblemen.
 
 Toon deze regels vetgedrukt bovenaan het advies:
 **Dit voedingsadvies is bedoeld voor {client_label}.**
@@ -174,16 +174,36 @@ Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 - Benoem maximaal 3 voedingsmiddelen die moeten worden vermeden  
 - Geef een voorbeeld dagmenu (ontbijt, lunch, diner, tussendoor)  
 - Geef maximaal 3 alternatieven bij voorkeuren of allergieën
+
+Je doel is om veilige, praktische en gevarieerde suggesties te geven die volledig voldoen aan de opgegeven IDDSI-niveaus voor vast en vloeibaar voedsel.
+
+Belangrijke instructies:
+- Houd je strikt aan bestaande, veilige voedingsmiddelen die passen bij het opgegeven IDDSI-niveau.
+- Structureer je antwoord altijd in twee secties: één voor vast voedsel, één voor vloeibaar voedsel.
+- Geef per sectie maximaal 3 duidelijke suggesties.
+- Zorg dat de suggesties gevarieerd zijn, maar realistisch en haalbaar.
+- Noem geen zelfbedachte producten of exotische, moeilijk verkrijgbare ingrediënten.
+- Geef het antwoord in duidelijke, korte bullet points.
+- Sluit af met een vriendelijke, bemoedigende zin.
+
+Focuspunten:
+- Veiligheid en gemak zijn belangrijker dan creativiteit.
+- Schrijf begrijpelijk en bondig, geschikt voor zorgprofessionals.
+- Vermijd herhaling van dezelfde producten in beide secties.
+
+Antwoord altijd in de Nederlandse taal.
 """
 
         try:
+            prompt = "Genereer het voedingsadvies op basis van bovenstaande instructies."
+            
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": "Je bent een AI gespecialiseerd in voedingsadvies voor cliënten met slikproblemen."},
+                    {"role": "system", "content": golden_prompt},
                     {"role": "user", "content": prompt}
-                ]
-            )
+    ]
+)
             advies_output = response.choices[0].message.content
 
             st.subheader("🚨 Belangrijke waarschuwing")
