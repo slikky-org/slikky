@@ -194,6 +194,12 @@ Belangrijke instructies:
 - Zorg dat de suggesties gevarieerd zijn, maar realistisch en haalbaar.
 - Noem geen zelfbedachte producten of exotische, moeilijk verkrijgbare ingrediënten.
 - Geef het antwoord in duidelijke, korte bullet points.
+- Voeg bij ‘Vertaling naar voedingsplan’ maximaal 2 zinnen toe over hoe het advies aansluit op het IDDSI-niveau.
+- Vat het logopedisch advies puntsgewijs samen (korte bullets).
+- Geef bij elke vermelding onder 'Te vermijden' een korte toelichting, bijvoorbeeld "ivm allergie" of "ivm verhoogde slikrisico’s".
+- Bied bij elke allergie of intolerantie minimaal twee alternatieve voedingsopties aan.
+- Geef bij 'Vertaling naar voedingsplan' maximaal twee zinnen uitleg over de koppeling met de opgegeven IDDSI-niveaus.
+- Vermijd dubbele of herhaalde adviezen binnen dezelfde sectie (bijvoorbeeld niet twee keer 'niet praten tijdens de maaltijd').
 - Sluit af met een vriendelijke, bemoedigende zin.
 
 Focuspunten:
