@@ -1,8 +1,18 @@
-import streamlit as st
-from dotenv import load_dotenv
 import os
-from openai import OpenAI
+import streamlit as st
 import locale
+from openai import OpenAI
+
+# Haal sleutel uit secrets (voor Streamlit Cloud) of uit .env (voor lokaal gebruik)
+try:
+    # Werkt op Streamlit Cloud
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    # Werkt lokaal via .env of systeemvariabelen
+    from dotenv import load_dotenv
+    load_dotenv()
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+
 from io import BytesIO
 import datetime
 def tel_gebruik():
