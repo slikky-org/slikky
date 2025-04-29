@@ -2,6 +2,7 @@ import os
 import streamlit as st
 import locale
 from openai import OpenAI
+from dotenv import load_dotenv
 
 # Haal sleutel uit secrets (voor Streamlit Cloud) of uit .env (voor lokaal gebruik)
 try:
@@ -9,7 +10,6 @@ try:
     openai_api_key = st.secrets["OPENAI_API_KEY"]
 except Exception:
     # Werkt lokaal via .env of systeemvariabelen
-    from dotenv import load_dotenv
     load_dotenv()
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
