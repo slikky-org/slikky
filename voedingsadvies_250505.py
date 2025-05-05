@@ -352,3 +352,9 @@ Focuspunten:
 if st.button("🔁 Herstel alle velden", key="reset_knop", on_click=reset_invoer):
     st.session_state["reset"] = True
     st.rerun()
+    
+def footer():
+    st.markdown("---")
+    st.markdown("<sub><i>SLIKKY® versie: slikky_b_250505</i></sub>", unsafe_allow_html=True)
+
+footer()
