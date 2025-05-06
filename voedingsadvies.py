@@ -50,6 +50,11 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=openai_api_key)
 
+st.set_page_config(
+    page_title="SLIKKY APP",
+    page_icon="favicon.png"
+)
+
 # Resetknop voor formulier
 if st.session_state.get("reset", False):
     st.cache_data.clear()
@@ -98,13 +103,6 @@ hide_streamlit_style = """
 
 # Apply the CSS to hide the elements
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-st.set_page_config(
-    page_title="SLIKKY APP",
-    page_icon="favicon.png"
-)
-
-st.title("SLIKKY APP")
 
 st.subheader("🔒 Cliëntgegevens (worden niet opgeslagen)")
 col1, col2, col3 = st.columns([1, 3, 2])
