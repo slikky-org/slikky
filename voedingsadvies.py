@@ -96,7 +96,7 @@ hide_streamlit_style = """
     }
 
     button {
-    width: 100%;
+    width: 100% !important;
     }
     </style>
 """
