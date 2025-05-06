@@ -58,9 +58,7 @@ st.set_page_config(
 # Hide Streamlit style elements
 hide_streamlit_style = """
     <style>
-    #MainMenu {visibility: hidden;}  /* Hide the main menu */
-    footer {visibility: hidden;}      /* Hide the footer */
-    header {visibility: hidden;}      /* Hide the header */
+    header {visibility: hidden !important;}      /* Hide the header */
     .stMainBlockContainer {
         padding-top: 12px;
     }
