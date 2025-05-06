@@ -277,7 +277,7 @@ Antwoord altijd in de Nederlandse taal.
                 styles.add(ParagraphStyle(name='BoldBody', fontSize=11, leading=16, alignment=TA_LEFT, fontName='Helvetica-Bold'))
 
                 try:
-                    logo = Image("logo_slikky.png", width=3.5*cm, height=3.5*cm)
+                    logo = Image("logo_slikky.png", width=3.5*cm, height=1*cm)
                     elements.append(logo)
                 except Exception as e:
                     elements.append(Paragraph("⚠️ Logo niet gevonden: " + str(e), styles['Body']))
