@@ -55,6 +55,28 @@ st.set_page_config(
     page_icon="favicon.png"
 )
 
+# Hide Streamlit style elements
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}  /* Hide the main menu */
+    footer {visibility: hidden;}      /* Hide the footer */
+    header {visibility: hidden;}      /* Hide the header */
+    .stMainBlockContainer {
+        padding-top: 12px;
+    }
+    h3 {
+    font-size: 1rem !important;
+    }
+
+    button {
+    width: 100% !important;
+    }
+    </style>
+"""
+
+# Apply the CSS to hide the elements
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # Resetknop voor formulier
 if st.session_state.get("reset", False):
     st.cache_data.clear()
@@ -81,28 +103,6 @@ if st.session_state.get("reset", False):
 # Interface
 st.image("logo_slikky.svg", width=150)
 st.markdown("### Voedingsadvies bij slikproblemen")
-
-# Hide Streamlit style elements
-hide_streamlit_style = """
-    <style>
-    #MainMenu {visibility: hidden;}  /* Hide the main menu */
-    footer {visibility: hidden;}      /* Hide the footer */
-    header {visibility: hidden;}      /* Hide the header */
-    .stMainBlockContainer {
-        padding-top: 12px;
-    }
-    h3 {
-    font-size: 1rem !important;
-    }
-
-    button {
-    width: 100% !important;
-    }
-    </style>
-"""
-
-# Apply the CSS to hide the elements
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.subheader("🔒 Cliëntgegevens (worden niet opgeslagen)")
 col1, col2, col3 = st.columns([1, 3, 2])
