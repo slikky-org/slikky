@@ -312,7 +312,7 @@ Antwoord altijd in de Nederlandse taal.
                 elements.append(Spacer(1, 40))
 
                 try:
-                    merkbadge = Image("images/logo_slikky.png", width=5.0*cm, height=5.0*cm)
+                    merkbadge = Image("images/logo_slikky.png", width=3.5*cm, height=1*cm)
                     merkbadge.hAlign = 'CENTER'
                     elements.append(merkbadge)
                 except Exception as e:
