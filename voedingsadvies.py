@@ -52,6 +52,8 @@ client = OpenAI(api_key=openai_api_key)
 
 # Resetknop voor formulier
 if st.session_state.get("reset", False):
+    st.cache_data.clear()
+    st.cache_resource.clear()
     st.session_state.update({
         "gender": "Dhr.",
         "naam": "",
@@ -164,25 +166,25 @@ Toon deze regels vetgedrukt bovenaan het advies:
 **Zorgorganisatie: {zorgorganisatie} | Locatie: {locatie}**
 **Aangemaakt door: {aangemaakt_door} ({functie})**
 
-**1. Logopedisch advies**  
+**1. Logopedisch advies**
 Herhaal het advies dat is ingevoerd.
 
-**2. Vertaling naar voedingsplan**  
+**2. Vertaling naar voedingsplan**
 Leg kort uit hoe je dit advies hebt vertaald naar een aangepast voedingsplan.
 
-**3. Belangrijke gegevens**  
-- IDDSI niveau voedsel: {iddsi_vast}  
-- IDDSI niveau vloeistof: {iddsi_vloeibaar}  
-- Logopedisch advies: {advies}  
-- Allergieën: {allergieën}  
-- Voedselvoorkeuren: {voorkeuren}  
+**3. Belangrijke gegevens**
+- IDDSI niveau voedsel: {iddsi_vast}
+- IDDSI niveau vloeistof: {iddsi_vloeibaar}
+- Logopedisch advies: {advies}
+- Allergieën: {allergieën}
+- Voedselvoorkeuren: {voorkeuren}
 - {toezicht_tekst}
 - {hulp_tekst}
 
-**4. Concreet voedingsprogramma**  
-- Geef maximaal 3 aanbevolen voedingsmiddelen per categorie (bijv. vast en vloeibaar)  
-- Benoem maximaal 3 voedingsmiddelen die moeten worden vermeden  
-- Geef een voorbeeld dagmenu (ontbijt, lunch, diner, tussendoor)  
+**4. Concreet voedingsprogramma**
+- Geef maximaal 3 aanbevolen voedingsmiddelen per categorie (bijv. vast en vloeibaar)
+- Benoem maximaal 3 voedingsmiddelen die moeten worden vermeden
+- Geef een voorbeeld dagmenu (ontbijt, lunch, diner, tussendoor)
 - Geef maximaal 3 alternatieven bij voorkeuren of allergieën
 
 Je doel is om veilige, praktische en gevarieerde suggesties te geven die volledig voldoen aan de opgegeven IDDSI-niveaus voor vast en vloeibaar voedsel.
@@ -212,7 +214,7 @@ Antwoord altijd in de Nederlandse taal.
 
         try:
             prompt = "Genereer het voedingsadvies op basis van bovenstaande instructies."
-            
+
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
