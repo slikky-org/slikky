@@ -74,7 +74,7 @@ if st.session_state.get("reset", False):
     st.rerun()
 
 # Interface
-st.image("logo_slikky.png", width=150)
+st.image("logo_slikky.svg", width=150)
 st.markdown("### Voedingsadvies bij slikproblemen")
 
 st.subheader("🔒 Cliëntgegevens (worden niet opgeslagen)")
