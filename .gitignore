@@ -1,4 +1,31 @@
-.env
+# ========== PYTHON-BESTANDEN ==========
 __pycache__/
-*.pyc
-.idea
+*.py[cod]
+*.pyo
+*.pyd
+
+# ========== LOG- EN CSV-BESTANDEN ==========
+*.log
+*.csv
+
+# ========== BACK-UPS EN VERSIEBESTANDEN ==========
+backup/
+werkversie/
+voedingsadvies_*.py
+*_werkversie.py
+
+# ========== STREAMLIT / TEMP ==========
+.streamlit/
+
+# ========== EDITOR / IDE ==========
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.swp
+
+# ========== MAC & WINDOWS SYSTEM FILES ==========
+.DS_Store
+Thumbs.db
+desktop.ini

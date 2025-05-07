@@ -99,8 +99,9 @@ if st.session_state.get("reset", False):
     st.rerun()
 
 # Interface
-st.image("logo_slikky.svg", width=150)
+st.image("logo_slikky.png", width=150)
 st.markdown("### Voedingsadvies bij slikproblemen")
+st.write("Voer het logopedisch advies in, geef IDDSI-niveaus en specifieke voorkeuren op.")
 
 st.subheader("🔒 Cliëntgegevens (worden niet opgeslagen)")
 col1, col2, col3 = st.columns([1, 3, 2])
@@ -335,7 +336,7 @@ Antwoord altijd in de Nederlandse taal.
                 st.download_button(
                     label="💾 Opslaan als PDF",
                     data=buffer,
-                    file_name=f"voedingsadvies_{client_naam.replace(' ', '')}{client_geboortedatum.strftime('%d%m%Y')}.pdf",
+                    file_name=f"Slikky_voedingsadvies_{client_naam.strip().replace(' ', '_')}_{client_geboortedatum.strftime('%d-%m-%Y')}.pdf",
                     mime="application/pdf"
                 )
 
@@ -348,3 +349,9 @@ Antwoord altijd in de Nederlandse taal.
 if st.button("🔁 Herstel alle velden"):
     st.session_state["reset"] = True
     st.rerun()
+    
+def footer():
+    st.markdown("---")
+    st.markdown("<sub><i>SLIKKY® Basis v2025.04.2</i></sub>", unsafe_allow_html=True)
+
+footer()

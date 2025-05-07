@@ -9,10 +9,22 @@
 - Dynamische waarschuwingen (onder toezicht, hulp bij eten)
 - PDF-export met begeleidende informatie
 
+
+## 🧪 Voor wie?
+
+Zorgprofessionals zoals logopedisten, diëtisten en artsen in:
+
+- Revalidatiecentra
+- Verpleeghuizen
+- Ziekenhuizen
+- Woon- en zorgcentra
+
+
 ## 🔄 Versie
 
 Dit is de gratis basisversie van SLIKKY® (vanaf april 2025).  
 Een Premiumversie met filters, uitgebreidere output en testmogelijkheden is apart beschikbaar.
+
 
 ## 🚀 Meer info
 
@@ -21,9 +33,8 @@ Een Premiumversie met filters, uitgebreidere output en testmogelijkheden is apar
 
 
 **Update 5 mei 2025**  
-**Bestandsnaam:** `voedingsadvies_250505.py`
+**Bestandsnaam:** `voedingsadvies.py`
 - Golden prompt verbeterd met duidelijke instructies en sluitregels  
 - Dubbele invoer bij allergie en voorkeur wordt nu geblokkeerd  
 - Herstelknop ‘alle velden leegmaken’ toegevoegd (inclusief sessiebeheer)  
 - Bestandsnaam van PDF is nu uniek en geschikt voor cliëntdossier
-
